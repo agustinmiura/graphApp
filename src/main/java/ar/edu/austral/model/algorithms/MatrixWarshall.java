@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,67 +18,81 @@
 package ar.edu.austral.model.algorithms;
 
 import ar.edu.austral.model.interfaces.IGraph;
-public class MatrixWarshall {
-	private static final MatrixWarshall MATRIX_WARSHALL = new MatrixWarshall();
 
-	public static boolean[][] getAdjacentMatrix(IGraph graph) throws Exception {
-		return (MATRIX_WARSHALL.subGetAdyacentMatrix(graph));
-	}
-	public static boolean[][] getWarshallMatrix(IGraph graph) throws Exception {
+public class MatrixWarshall
+{
+    private static final MatrixWarshall MATRIX_WARSHALL = new MatrixWarshall(  );
 
-		if (graph == null) {
+    public static boolean[][] getAdjacentMatrix( IGraph graph )
+                                         throws Exception
+    {
+        return ( MATRIX_WARSHALL.subGetAdyacentMatrix( graph ) );
+    }
 
-			throw new Exception("cant use null parameters");
-		} else {
+    public static boolean[][] getWarshallMatrix( IGraph graph )
+                                         throws Exception
+    {
+        if ( graph == null )
+        {
+            throw new Exception( "cant use null parameters" );
+        } else
+        {
+            return ( MATRIX_WARSHALL.subGetMatrixWarshall( graph ) );
+        }
+    }
 
-			return (MATRIX_WARSHALL.subGetMatrixWarshall(graph));
-		}
+    private boolean[][] subGetAdyacentMatrix( IGraph graph )
+                                      throws Exception
+    {
+        IGraph undirected = graph;
+        int vertexQty = undirected.getVertexQty(  );
+        boolean[][] answer = new boolean[vertexQty][vertexQty];
 
-	}
+        for ( int i = 0; i < vertexQty; i++ )
+        {
+            for ( int j = 0; j < vertexQty; j++ )
+            {
+                if ( undirected.existEdge( i, j ) )
+                {
+                    answer[i][j] = true;
+                }
+            }
+        }
 
-	private boolean[][] subGetAdyacentMatrix(IGraph graph) throws Exception {
-		IGraph undirected = graph;
-		int vertexQty = undirected.getVertexQty();
-		boolean[][] answer = new boolean[vertexQty][vertexQty];
+        return answer;
+    }
 
-		for (int i = 0; i < vertexQty; i++) {
-			for (int j = 0; j < vertexQty; j++) {
-				if (undirected.existEdge(i, j)) {
-					answer[i][j] = true;
-				}
+    private boolean[][] getAdyacentMatrix( IGraph graph )
+                                   throws Exception
+    {
+        if ( graph == null )
+        {
+            throw new Exception( "cant use null graph for warshall" );
+        }
 
-			}
-		}
+        return ( subGetAdyacentMatrix( graph ) );
+    }
 
-		return answer;
-	}
+    private boolean[][] subGetMatrixWarshall( IGraph graph )
+                                      throws Exception
+    {
+        boolean[][] matrix = subGetAdyacentMatrix( graph );
+        int vertexQty = graph.getVertexQty(  );
 
-	private boolean[][] getAdyacentMatrix(IGraph graph) throws Exception {
+        for ( int k = 0; k < vertexQty; k++ )
+        {
+            for ( int i = 0; i < vertexQty; i++ )
+            {
+                for ( int j = 0; j < vertexQty; j++ )
+                {
+                    if ( matrix[i][k] && matrix[k][j] )
+                    {
+                        matrix[i][j] = true;
+                    }
+                }
+            }
+        }
 
-		if (graph == null) {
-
-			throw new Exception("cant use null graph for warshall");
-		}
-
-		return (subGetAdyacentMatrix(graph));
-
-	}
-
-	private boolean[][] subGetMatrixWarshall(IGraph graph) throws Exception {
-		boolean[][] matrix = subGetAdyacentMatrix(graph);
-		int vertexQty = graph.getVertexQty();
-		for (int k = 0; k < vertexQty; k++) {
-			for (int i = 0; i < vertexQty; i++) {
-				for (int j = 0; j < vertexQty; j++) {
-
-					if (matrix[i][k] && matrix[k][j]) {
-
-						matrix[i][j] = true;
-					}
-				}
-			}
-		}
-
-		return matrix;
-	}
+        return matrix;
+    }
 }

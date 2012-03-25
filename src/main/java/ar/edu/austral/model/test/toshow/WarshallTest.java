@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,17 +21,20 @@ import ar.edu.austral.model.algorithms.MatrixWarshall;
 import ar.edu.austral.model.implementations.AdjacentMatrixGraph;
 import ar.edu.austral.model.interfaces.IGraph;
 
-public class WarshallTest {
-	public static void main(String[] args) {
-		try {
-			IGraph graph = new AdjacentMatrixGraph(5);
-			graph.addEdge(0, 3);
-			graph.addEdge(0, 1);
+public class WarshallTest
+{
+    public static void main( String[] args )
+    {
+        try
+        {
+            IGraph graph = new AdjacentMatrixGraph( 5 );
+            graph.addEdge( 0, 3 );
+            graph.addEdge( 0, 1 );
 
-			boolean[][] matrix = MatrixWarshall.getWarshallMatrix(graph);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+            boolean[][] matrix = MatrixWarshall.getWarshallMatrix( graph );
+        } catch ( Exception e )
+        {
+            e.printStackTrace(  );
+        }
+    }
 }

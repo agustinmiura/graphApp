@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,22 +19,25 @@ package ar.edu.austral.model.algorithms;
 
 import java.util.LinkedList;
 
-public class NodoA {
-	int nodo;
-	public int distancia;
-	public LinkedList<Integer> camino;
+public class NodoA
+{
+    int nodo;
+    public int distancia;
+    public LinkedList<Integer> camino;
 
-	NodoA(int nodo, int distancia, NodoA anterior) {
-		this.nodo = nodo;
-		this.distancia = distancia;
-		camino = (LinkedList<Integer>) anterior.camino.clone();
-		camino.add(new Integer(nodo));
-	}
+    NodoA( int nodo, int distancia, NodoA anterior )
+    {
+        this.nodo = nodo;
+        this.distancia = distancia;
+        camino = (LinkedList<Integer>) anterior.camino.clone(  );
+        camino.add( new Integer( nodo ) );
+    }
 
-	NodoA(int nodo, int distancia) {
-		this.nodo = nodo;
-		this.distancia = distancia;
-		camino = new LinkedList<Integer>();
-		camino.add(new Integer(nodo));
-	}
+    NodoA( int nodo, int distancia )
+    {
+        this.nodo = nodo;
+        this.distancia = distancia;
+        camino = new LinkedList<Integer>(  );
+        camino.add( new Integer( nodo ) );
+    }
 }

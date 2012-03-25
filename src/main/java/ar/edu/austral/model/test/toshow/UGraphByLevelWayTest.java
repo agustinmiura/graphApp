@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,131 +17,86 @@
  */
 package ar.edu.austral.model.test.toshow;
 
-import java.util.List;
-
 import ar.edu.austral.model.algorithms.UGraphByLevelWay;
 import ar.edu.austral.model.implementations.AdjacentListWeightGraph;
 import ar.edu.austral.model.implementations.AdjacentMatrixGraph;
 import ar.edu.austral.model.interfaces.IWeight;
 import ar.edu.austral.model.interfaces.Undirected;
 
-public class UGraphByLevelWayTest {
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		try {
-			Undirected<String> undirected = new AdjacentMatrixGraph(7);
-			undirected.addEdge(0, 1);
-			undirected.addEdge(1, 4);
+import java.util.List;
 
-			undirected.addEdge(4, 6);
-			undirected.addEdge(4, 5);
+public class UGraphByLevelWayTest
+{
+    private static void doTest2(  )
+    {
+        try
+        {
+            IWeight undirected = new AdjacentListWeightGraph( 7 );
 
-			undirected.addEdge(5, 3);
-			undirected.addEdge(6, 3);
+            undirected.addWeight( 0, 1, 10 );
+            undirected.addWeight( 1, 4, 10 );
 
-			undirected.addEdge(0, 3);
-			undirected.addEdge(3, 2);
+            undirected.addWeight( 4, 6, 10 );
+            undirected.addWeight( 4, 5, 10 );
 
-			int state = -1;
+            undirected.addWeight( 5, 3, 10 );
+            undirected.addWeight( 6, 3, 10 );
 
-			List<Integer>[] listArray = UGraphByLevelWay.getByLevelWay(
-					undirected, 0);
+            undirected.addWeight( 0, 3, 10 );
+            undirected.addWeight( 3, 2, 10 );
 
-			state = -1;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+            int state = -1;
 
-	private static void doTest2() {
+            List<Integer>[] listArray = UGraphByLevelWay.getByLevelWayUW( undirected, 0 );
 
-		// TODO Auto-generated method stub
-		try {
-			IWeight undirected = new AdjacentListWeightGraph(7);
+            state = -1;
+        } catch ( Exception e )
+        {
+            e.printStackTrace(  );
+        }
+    }
 
-			undirected.addWeight(0, 1, 10);
-			undirected.addWeight(1, 4, 10);
+    private static void doTest1(  )
+    {
+        try
+        {
+            Undirected<String> undirected = new AdjacentMatrixGraph( 7 );
+            int state = -1;
 
-			undirected.addWeight(4, 6, 10);
-			undirected.addWeight(4, 5, 10);
+            List<Integer>[] listArray = UGraphByLevelWay.getByLevelWay( undirected, 0 );
 
-			undirected.addWeight(5, 3, 10);
-			undirected.addWeight(6, 3, 10);
+            state = -1;
+        } catch ( Exception e )
+        {
+            e.printStackTrace(  );
+        }
+    }
 
-			undirected.addWeight(0, 3, 10);
-			undirected.addWeight(3, 2, 10);
+    private static void doTest0(  )
+    {
+        try
+        {
+            Undirected<String> undirected = new AdjacentMatrixGraph( 7 );
+            undirected.addEdge( 0, 1 );
+            undirected.addEdge( 1, 4 );
 
-			int state = -1;
+            undirected.addEdge( 4, 6 );
+            undirected.addEdge( 4, 5 );
 
-			List<Integer>[] listArray = UGraphByLevelWay.getByLevelWayUW(
-					undirected, 0);
+            undirected.addEdge( 5, 3 );
+            undirected.addEdge( 6, 3 );
 
-			state = -1;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            undirected.addEdge( 0, 3 );
+            undirected.addEdge( 3, 2 );
 
-	}
+            int state = -1;
 
-	private static void doTest1() {
+            List<Integer>[] listArray = UGraphByLevelWay.getByLevelWay( undirected, 0 );
 
-		// TODO Auto-generated method stub
-		try {
-			Undirected<String> undirected = new AdjacentMatrixGraph(7);
-			/*
-			 * undirected.addEdge(0,1); undirected.addEdge(1,4);
-			 * 
-			 * undirected.addEdge(4,6); undirected.addEdge(4,5);
-			 * 
-			 * undirected.addEdge(5,3); undirected.addEdge(6,3);
-			 * 
-			 * undirected.addEdge(0,3); undirected.addEdge(3,2);
-			 */
-			int state = -1;
-
-			List<Integer>[] listArray = UGraphByLevelWay.getByLevelWay(
-					undirected, 0);
-
-			state = -1;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	private static void doTest0() {
-
-		try {
-			Undirected<String> undirected = new AdjacentMatrixGraph(7);
-			undirected.addEdge(0, 1);
-			undirected.addEdge(1, 4);
-
-			undirected.addEdge(4, 6);
-			undirected.addEdge(4, 5);
-
-			undirected.addEdge(5, 3);
-			undirected.addEdge(6, 3);
-
-			undirected.addEdge(0, 3);
-			undirected.addEdge(3, 2);
-
-			int state = -1;
-
-			List<Integer>[] listArray = UGraphByLevelWay.getByLevelWay(
-					undirected, 0);
-
-			state = -1;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
+            state = -1;
+        } catch ( Exception e )
+        {
+            e.printStackTrace(  );
+        }
+    }
 }

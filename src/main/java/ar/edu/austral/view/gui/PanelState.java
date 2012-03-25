@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,8 @@
  */
 package ar.edu.austral.view.gui;
 
-public enum PanelState {
-
-	PUT_VERTEX, NONE, TEST_GRAFICAL_EDGE;
+public enum PanelState
+{PUT_VERTEX,
+    NONE,
+    TEST_GRAFICAL_EDGE;
 }

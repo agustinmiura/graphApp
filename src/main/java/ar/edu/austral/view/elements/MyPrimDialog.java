@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,117 +17,119 @@
  */
 package ar.edu.austral.view.elements;
 
+import ar.edu.austral.model.algorithms.GraphUtils;
+import ar.edu.austral.model.interfaces.IGraph;
+import ar.edu.austral.model.interfaces.IWeight;
+import ar.edu.austral.view.gui.GraphObserver;
+import ar.edu.austral.view.gui.GraphView2;
+
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+public class MyPrimDialog
+    extends MyListDialog
+{
+    private static final String STRING_NONE = "None";
+    private static final String STRING_NORMAL = "Normal";
+    private static final String STRING_SOLVE = "Show solution";
+    private static final long serialVersionUID = 1L;
+    private int[] primFatherArray;
+    private GraphObserver graphObserver;
+    private IGraph iGraph;
 
-import ar.edu.austral.controller.GraphShowApp;
-import ar.edu.austral.model.algorithms.Dijkstra2;
-import ar.edu.austral.model.algorithms.GraphUtils;
-import ar.edu.austral.model.algorithms.NodoA;
-import ar.edu.austral.model.implementations.AdjacentListWeightGraph;
-import ar.edu.austral.model.interfaces.IGraph;
-import ar.edu.austral.model.interfaces.IWeight;
-import ar.edu.austral.view.gui.GraphObserver;
-import ar.edu.austral.view.gui.GraphView2;
+    public MyPrimDialog( Frame frame, List list, int[] primFatherArray, IGraph iGraph, GraphObserver graphObserver )
+    {
+        super( frame, list );
+        this.graphObserver = graphObserver;
+        this.primFatherArray = primFatherArray;
+        this.iGraph = iGraph;
+    }
 
-public class MyPrimDialog extends MyListDialog {
+    public GraphObserver getGraphObserver(  )
+    {
+        return graphObserver;
+    }
 
-	private static final String STRING_NONE = "None";
-	private static final String STRING_NORMAL = "Normal";
-	private static final String STRING_SOLVE = "Show solution";
+    public void setObserver( GraphObserver graphObserver )
+    {
+        this.graphObserver = graphObserver;
+    }
 
-	private static final long serialVersionUID = 1L;
-	private int[] primFatherArray;
-	private GraphObserver graphObserver;
-	private IGraph iGraph;
+    public static List<String> getDialogPrimActions(  )
+    {
+        List<String> list = new ArrayList(  );
+        list.add( MyPrimDialog.STRING_NONE );
+        list.add( MyPrimDialog.STRING_NORMAL );
+        list.add( MyPrimDialog.STRING_SOLVE );
 
-	public MyPrimDialog(Frame frame, List list, int[] primFatherArray,
-			IGraph iGraph, GraphObserver graphObserver) {
-		super(frame, list);
-		this.graphObserver = graphObserver;
-		this.primFatherArray = primFatherArray;
-		this.iGraph = iGraph;
-	}
+        return list;
+    }
 
-	public GraphObserver getGraphObserver() {
+    // here the exception
+    private void paintSolutionInGraph(  )
+    {
+        try
+        {
+            int sizeArray = primFatherArray.length;
+            IWeight iWeight = (IWeight) iGraph;
+            boolean check0 = iWeight == null;
+            boolean vertexIsNotConnected;
+            int vertexToConnect;
+            int startVertex;
+            int endVertex;
+            int minimumCost;
 
-		return graphObserver;
-	}
+            for ( int i = 0; i < sizeArray; i++ )
+            {
+                vertexToConnect = primFatherArray[i];
+                vertexIsNotConnected = ( vertexToConnect == -1 );
 
-	public void setObserver(GraphObserver graphObserver) {
+                if ( ! vertexIsNotConnected )
+                {
+                    startVertex = i;
+                    endVertex = vertexToConnect;
 
-		this.graphObserver = graphObserver;
-	}
+                    minimumCost = GraphUtils.getMinWeight( iGraph, startVertex, endVertex );
 
-	public static List<String> getDialogPrimActions() {
+                    GraphView2 graphView2 = (GraphView2) graphObserver;
+                    int state = -1;
 
-		List<String> list = new ArrayList();
-		list.add(MyPrimDialog.STRING_NONE);
-		list.add(MyPrimDialog.STRING_NORMAL);
-		list.add(MyPrimDialog.STRING_SOLVE);
-		return list;
-	}
+                    graphView2.highlightGraficalEdge( startVertex, endVertex, minimumCost, Color.BLUE );
+                }
+            }
+        } catch ( Exception e )
+        {
+        }
+    }
 
-	// here the exception
-	private void paintSolutionInGraph() {
-		try {
-			int sizeArray = primFatherArray.length;
-			IWeight iWeight = (IWeight) iGraph;
-			boolean check0 = iWeight == null;
-			boolean vertexIsNotConnected;
-			int vertexToConnect;
-			int startVertex;
-			int endVertex;
-			int minimumCost;
+    protected void acceptButtonActionPerformed( ActionEvent actionEvent )
+    {
+        int n = jList.getSelectedIndex(  );
 
-			for (int i = 0; i < sizeArray; i++) {
-				vertexToConnect = primFatherArray[i];
-				vertexIsNotConnected = (vertexToConnect == -1);
+        switch ( n )
+        {
+            case 0:
+                break;
 
-				if (!vertexIsNotConnected) {
-					startVertex = i;
-					endVertex = vertexToConnect;
+            case 1:
+            {
+                graphObserver.paintAllEdges( null );
 
-					minimumCost = GraphUtils.getMinWeight(iGraph, startVertex,
-							endVertex);
-					GraphView2 graphView2 = (GraphView2) graphObserver;
-					int state = -1;
+                break;
+            }
 
-					graphView2.highlightGraficalEdge(startVertex, endVertex,
-							minimumCost, Color.BLUE);
-				}
-			}
-		} catch (Exception e) {
-		}
+            case 2:
+            {
+                paintSolutionInGraph(  );
 
-	}
+                break;
+            }
 
-	protected void acceptButtonActionPerformed(ActionEvent actionEvent) {
-		int n = jList.getSelectedIndex();
-		switch (n) {
-		case 0: {
-			break;
-		}
-		case 1: {
-			graphObserver.paintAllEdges(null);
-			break;
-		}
-		case 2: {
-			paintSolutionInGraph();
-
-			break;
-		}
-		default: {
-			break;
-		}
-
-		}
-
-	}
+            default:
+                break;
+        }
+    }
 }

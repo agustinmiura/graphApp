@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,25 +17,26 @@
  */
 package ar.edu.austral.model.utils.enums;
 
-import java.util.Comparator;
-
 import ar.edu.austral.model.utils.Pair;
 
-public class ComparatorsUsed {
+import java.util.Comparator;
 
-	public static Comparator<Pair<Integer, Integer>> getComparatorSecondNumber() {
+public class ComparatorsUsed
+{
+    public static Comparator<Pair<Integer, Integer>> getComparatorSecondNumber(  )
+    {
+        return new DefaultComparator(  );
+    }
 
-		return new DefaultComparator();
-	}
+    private static class DefaultComparator
+        implements Comparator<Pair<Integer, Integer>>
+    {
+        public int compare( Pair<Integer, Integer> o1, Pair<Integer, Integer> o2 )
+        {
+            Integer cost0 = o1.getSecond(  );
+            Integer cost1 = o2.getSecond(  );
 
-	private static class DefaultComparator implements
-			Comparator<Pair<Integer, Integer>> {
-
-		public int compare(Pair<Integer, Integer> o1, Pair<Integer, Integer> o2) {
-			Integer cost0 = o1.getSecond();
-			Integer cost1 = o2.getSecond();
-			return (cost0 - cost1);
-		}
-
-	}
+            return ( cost0 - cost1 );
+        }
+    }
 }

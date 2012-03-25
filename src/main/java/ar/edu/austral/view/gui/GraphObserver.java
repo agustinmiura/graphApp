@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,45 +17,44 @@
  */
 package ar.edu.austral.view.gui;
 
+import ar.edu.austral.model.utils.enums.GraphType;
+
 import java.awt.Color;
 import java.util.List;
 
-import ar.edu.austral.model.utils.enums.GraphType;
+public interface GraphObserver
+{
+    public void graphEmpty(  );
 
-public interface GraphObserver {
+    public void vertexDeleted( int v );
 
-	public void graphEmpty();
+    public void vertexAdded(  );
 
-	public void vertexDeleted(int v);
+    public void edgeDeleted( int startVertex, int endVertex );
 
-	public void vertexAdded();
+    public void edgeAdded( int startVertex, int endVertex );
 
-	public void edgeDeleted(int startVertex, int endVertex);
+    public void weightAdded( int startVertex, int endVertex, int weight );
 
-	public void edgeAdded(int startVertex, int endVertex);
+    public void weightDeleted( int startVertex, int endVertex, int weight );
 
-	public void weightAdded(int startVertex, int endVertex, int weight);
+    public void setGraphType( GraphType type );
 
-	public void weightDeleted(int startVertex, int endVertex, int weight);
+    public void deletedAllEdges(  );
 
-	public void setGraphType(GraphType type);
+    public boolean equals( GraphObserver graphObserver );
 
-	public void deletedAllEdges();
+    public int getId(  );
 
-	public boolean equals(GraphObserver graphObserver);
+    public void setId( int id );
 
-	public int getId();
+    public void notifyAddEdge( int startVertex, int endVertex, int cost );
 
-	public void setId(int id);
+    public void notifyWayLight( List vertex, List cost, boolean doAfterRepaint );
 
-	public void notifyAddEdge(int startVertex, int endVertex, int cost);
+    public void paintAllEdges( Color color );
 
-	public void notifyWayLight(List vertex, List cost, boolean doAfterRepaint);
+    public void paintSpecialEdge( int startVertex, int endVertex, int cost, Color color );
 
-	public void paintAllEdges(Color color);
-
-	public void paintSpecialEdge(int startVertex, int endVertex, int cost,
-			Color color);
-
-	public Color getSpecialColor();
+    public Color getSpecialColor(  );
 }

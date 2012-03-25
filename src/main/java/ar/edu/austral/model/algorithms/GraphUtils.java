@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,25 +17,30 @@
  */
 package ar.edu.austral.model.algorithms;
 
-import java.util.List;
-
 import ar.edu.austral.model.interfaces.IGraph;
 import ar.edu.austral.model.interfaces.IWeight;
 
-public class GraphUtils {
+import java.util.List;
 
-	public static <T> Integer getMinWeight(IGraph<T> grafo, int origen,
-			int destino) throws Exception {
-		IWeight w = (IWeight) grafo;
-		List temp = w.getWeight(origen, destino);
-		Integer in = new Integer(-1);
+public class GraphUtils
+{
+    public static <T> Integer getMinWeight( IGraph<T> grafo, int origen, int destino )
+                                    throws Exception
+    {
+        IWeight w = (IWeight) grafo;
+        List temp = w.getWeight( origen, destino );
+        Integer in = new Integer( -1 );
 
-		for (int j = 0; j < temp.size(); j++) {
-			Integer cost = (Integer) temp.get(j);
-			if (cost.compareTo(in) < 0 || in < 0) {
-				in = cost;
-			}
-		}
-		return in;
-	}
+        for ( int j = 0; j < temp.size(  ); j++ )
+        {
+            Integer cost = (Integer) temp.get( j );
+
+            if ( ( cost.compareTo( in ) < 0 ) || ( in < 0 ) )
+            {
+                in = cost;
+            }
+        }
+
+        return in;
+    }
 }

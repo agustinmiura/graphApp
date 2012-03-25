@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,171 +17,170 @@
  */
 package ar.edu.austral.model.algorithms;
 
+import ar.edu.austral.model.interfaces.IWeight;
+import ar.edu.austral.model.interfaces.Undirected;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import ar.edu.austral.model.implementations.AdjacentListWeightGraph;
-import ar.edu.austral.model.implementations.AdjacentMatrixGraph;
-import ar.edu.austral.model.interfaces.Directed;
-import ar.edu.austral.model.interfaces.IGraph;
-import ar.edu.austral.model.interfaces.IWeight;
-import ar.edu.austral.model.interfaces.Undirected;
-
 /**
  * recorrido en anchura del grafo sirve para grafos , no dirigidos , y con peso
- * 
+ *
  * se debe testear esto
- * 
+ *
  * @author user1_2 tested functions ok this
- * 
- * 
+ *
+ *
  */
-public class UGraphByLevelWay {
+public class UGraphByLevelWay
+{
+    public UGraphByLevelWay(  )
+    {
+        // testing this
+    }
 
-	public UGraphByLevelWay() {
-		// testing this
+    public static List<Integer>[] getByLevelWayUW( IWeight weight, int vertex )
+                                           throws Exception
+    {
+        Undirected undirected;
 
-	}
+        try
+        {
+            undirected = (Undirected) weight;
 
-	public static List<Integer>[] getByLevelWayUW(IWeight weight, int vertex)
-			throws Exception {
+            return UGraphByLevelWay.getByLevelWay( undirected, vertex );
+        } catch ( ClassCastException e )
+        {
+            throw new Exception( "User must provide a IWeight " + "that implements Undirected" );
+        }
+    }
 
-		Undirected undirected;
+    public static List<Integer>[] getByLevelWay( Undirected graph, int vertex )
+                                         throws Exception
+    {
+        UGraphByLevelWay byLevelWay = new UGraphByLevelWay(  );
 
-		try {
-			undirected = (Undirected) weight;
+        return byLevelWay.byLevelWay( graph, vertex );
+    }
 
-			return UGraphByLevelWay.getByLevelWay(undirected, vertex);
+    public List<Integer>[] byLevelWay( Undirected graph, int vertex )
+                               throws Exception
+    {
+        if ( invalidParameters( graph, vertex ) )
+        {
+            throw new Exception( "graph null or invalid vertex" );
+        }
 
-		} catch (ClassCastException e) {
-			throw new Exception("User must provide a IWeight "
-					+ "that implements Undirected");
-		}
+        List<Integer> listTemp;
+        int vertexQty = graph.getVertexQty(  );
+        boolean[] visited = new boolean[vertexQty];
+        Queue<List<Integer>> queue = new LinkedList<List<Integer>>(  );
+        int qty = 0;
+        int iterations = 0;
 
-	}
+        for ( int i = vertex; iterations < vertexQty; iterations++ )
+        {
+            listTemp = subByLevelWayConnectedComponent( graph, i, visited );
 
-	public static List<Integer>[] getByLevelWay(Undirected graph, int vertex)
-			throws Exception {
+            if ( ! listTemp.isEmpty(  ) )
+            {
+                queue.offer( listTemp );
+                qty++;
+            }
 
-		UGraphByLevelWay byLevelWay = new UGraphByLevelWay();
+            ( i ) = ( i + 1 ) % ( vertexQty );
+        }
 
-		return byLevelWay.byLevelWay(graph, vertex);
+        Iterator<List<Integer>> iterator = queue.iterator(  );
+        int index = -1;
+        List<Integer>[] answer = ( new List[qty] );
 
-	}
+        while ( iterator.hasNext(  ) )
+        {
+            index++;
+            answer[index] = queue.poll(  );
+        }
 
-	public List<Integer>[] byLevelWay(Undirected graph, int vertex)
-			throws Exception {
+        return answer;
+    }
 
-		if (invalidParameters(graph, vertex)) {
+    private boolean invalidParameters( Undirected graph, int vertex )
+    {
+        if ( ( graph == null ) || ( vertex < 0 ) || ( vertex >= graph.getVertexQty(  ) ) )
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
 
-			throw new Exception("graph null or invalid vertex");
-		}
+    private List<Integer> subByLevelWayConnectedComponent( Undirected graph, int vertex, boolean[] visited )
+                                                   throws Exception
+    {
+        List<Integer> answer = new LinkedList<Integer>(  );
 
-		List<Integer> listTemp;
-		int vertexQty = graph.getVertexQty();
-		boolean[] visited = new boolean[vertexQty];
-		Queue<List<Integer>> queue = new LinkedList<List<Integer>>();
-		int qty = 0;
-		int iterations = 0;
-		for (int i = vertex; iterations < vertexQty; iterations++) {
+        if ( visited[vertex] )
+        {
+            return answer;
+        }
 
-			listTemp = subByLevelWayConnectedComponent(graph, i, visited);
-			if (!listTemp.isEmpty()) {
+        boolean state;
+        List<Integer> tempList;
+        Queue<Integer> queue = new LinkedList<Integer>(  );
+        Integer vertexTemp;
+        state = queue.offer( vertex );
 
-				queue.offer(listTemp);
-				qty++;
-			}
-			(i) = (i + 1) % (vertexQty);
-		}
+        Iterator<Integer> iterator;
+        Integer integerTemp;
 
-		Iterator<List<Integer>> iterator = queue.iterator();
-		int index = -1;
-		List<Integer>[] answer = (new List[qty]);
-		while (iterator.hasNext()) {
-			index++;
-			answer[index] = queue.poll();
+        if ( ! state )
+        {
+            throw new Exception( "Cant insert element in queue what happened" );
+        }
 
-		}
+        while ( ! queue.isEmpty(  ) )
+        {
+            vertexTemp = queue.peek(  );
+            queue.remove(  );
 
-		return answer;
+            if ( visited[vertexTemp] )
+            {
+                continue;
+            }
 
-	}
+            answer.add( vertexTemp );
+            visited[vertexTemp] = true;
+            tempList = graph.getAdjacentList( vertexTemp );
 
-	private boolean invalidParameters(Undirected graph, int vertex) {
+            iterator = tempList.iterator(  );
 
-		if (graph == null || vertex < 0 || vertex >= graph.getVertexQty()) {
+            while ( iterator.hasNext(  ) )
+            {
+                integerTemp = iterator.next(  );
 
-			return true;
-		} else {
+                if ( ! visited[integerTemp] )
+                {
+                    queue.offer( integerTemp );
+                }
+            }
+        }
 
-			return false;
-		}
+        return answer;
+    }
 
-	}
+    private List<Integer> byLevelWayConnectedComponent( Undirected graph, int vertex, boolean[] visited )
+                                                throws Exception
+    {
+        List<Integer> answer = null;
 
-	private List<Integer> subByLevelWayConnectedComponent(Undirected graph,
-			int vertex, boolean[] visited) throws Exception {
-		List<Integer> answer = new LinkedList<Integer>();
+        if ( invalidParameters( graph, vertex ) )
+        {
+            throw new Exception( "null graph or invalid vertex" );
+        }
 
-		if (visited[vertex]) {
-
-			return answer;
-		}
-		boolean state;
-		List<Integer> tempList;
-		Queue<Integer> queue = new LinkedList<Integer>();
-		Integer vertexTemp;
-		state = queue.offer(vertex);
-		Iterator<Integer> iterator;
-		Integer integerTemp;
-		if (!state) {
-
-			throw new Exception("Cant insert element in queue what happened");
-		}
-
-		while (!queue.isEmpty()) {
-			vertexTemp = queue.peek();
-			queue.remove();
-
-			if (visited[vertexTemp]) {
-
-				continue;
-			}
-			answer.add(vertexTemp);
-			visited[vertexTemp] = true;
-			tempList = graph.getAdjacentList(vertexTemp);
-
-			iterator = tempList.iterator();
-
-			while (iterator.hasNext()) {
-
-				integerTemp = iterator.next();
-
-				if (!visited[integerTemp]) {
-
-					queue.offer(integerTemp);
-				}
-
-			}
-		}
-		return answer;
-
-	}
-
-	private List<Integer> byLevelWayConnectedComponent(Undirected graph,
-			int vertex, boolean[] visited) throws Exception {
-
-		List<Integer> answer = null;
-
-		if (invalidParameters(graph, vertex)) {
-
-			throw new Exception("null graph or invalid vertex");
-		}
-
-		return answer = subByLevelWayConnectedComponent(graph, vertex, visited);
-
-	}
-
+        return answer = subByLevelWayConnectedComponent( graph, vertex, visited );
+    }
 }

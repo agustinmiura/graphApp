@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,20 @@
  */
 package ar.edu.austral.model.utils;
 
-public class Utils {
-	public static String getString(String... stringArray) {
-		String answer = null;
-		StringBuffer sBuffer = new StringBuffer(stringArray[0]);
-		for (int i = 1; i < stringArray.length; i++) {
+public class Utils
+{
+    public static String getString( String... stringArray )
+    {
+        String answer = null;
+        StringBuffer sBuffer = new StringBuffer( stringArray[0] );
 
-			sBuffer.append(stringArray[i]);
+        for ( int i = 1; i < stringArray.length; i++ )
+        {
+            sBuffer.append( stringArray[i] );
+        }
 
-		}
-		answer = sBuffer.toString();
-		return answer;
-	}
+        answer = sBuffer.toString(  );
 
+        return answer;
+    }
 }

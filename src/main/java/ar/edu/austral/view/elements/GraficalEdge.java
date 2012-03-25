@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,144 +17,146 @@
  */
 package ar.edu.austral.view.elements;
 
+import ar.edu.austral.view.test.EdgeLine;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Line2D;
-import java.util.ArrayList;
-import java.util.List;
 
-import ar.edu.austral.view.test.EdgeLine;
+public class GraficalEdge
+{
+    private static final Point POINT = new Point( 10, 10 );
+    private EdgeLine edgeLine;
+    private int startVertex;
+    private int endVertex;
 
-public class GraficalEdge {
+    /**
+     * gets a grafical edge to search in a list if contains one that has //
+     * startVertex,endVertex,cost
+     *
+     * @param startVertex
+     * @param endVertex
+     * @param cost
+     * @return
+     */
+    public static GraficalEdge getZeroGraficalEdge( int startVertex, int endVertex, int cost )
+    {
+        // Point point=new Point(10,10);
+        GraficalEdge graficalEdge =
+            new GraficalEdge( GraficalEdge.POINT, GraficalEdge.POINT, startVertex, endVertex, cost );
 
-	private static final Point POINT = new Point(10, 10);
+        return graficalEdge;
+    }
 
-	private EdgeLine edgeLine;
-	private int startVertex;
-	private int endVertex;
+    public boolean equals( Object object )
+    {
+        GraficalEdge graficalEdge = (GraficalEdge) object;
 
-	/**
-	 * gets a grafical edge to search in a list if contains one that has //
-	 * startVertex,endVertex,cost
-	 * 
-	 * @param startVertex
-	 * @param endVertex
-	 * @param cost
-	 * @return
-	 */
-	public static GraficalEdge getZeroGraficalEdge(int startVertex,
-			int endVertex, int cost) {
-		// Point point=new Point(10,10);
-		GraficalEdge graficalEdge = new GraficalEdge(GraficalEdge.POINT,
-				GraficalEdge.POINT, startVertex, endVertex, cost);
-		return graficalEdge;
+        return this.equalsTo( graficalEdge );
+    }
 
-	}
+    public boolean equalsTo( GraficalEdge graficalEdge )
+    {
+        boolean answer = false;
+        boolean check0 = startVertex == graficalEdge.getStartVertex(  );
+        boolean check1 = endVertex == graficalEdge.getEndVertex(  );
 
-	public boolean equals(Object object) {
-		GraficalEdge graficalEdge = (GraficalEdge) object;
-		return this.equalsTo(graficalEdge);
+        Integer myCost = new Integer( edgeLine.getText(  ) );
+        Integer otherCost = new Integer( graficalEdge.getEdgeLine(  ).getText(  ) );
+        boolean check2 = myCost.equals( otherCost );
 
-	}
+        answer = check0 && check1 && check2;
 
-	public boolean equalsTo(GraficalEdge graficalEdge) {
+        return answer;
+    }
 
-		boolean answer = false;
-		boolean check0 = startVertex == graficalEdge.getStartVertex();
-		boolean check1 = endVertex == graficalEdge.getEndVertex();
+    /**
+     *
+     * @param startPoint
+     * @param endPoint
+     * @param startVertex
+     * @param endVertex
+     * @param vertexCost
+     */
+    public GraficalEdge( Point startPoint, Point endPoint, int startVertex, int endVertex, int vertexCost )
+    {
+        double x1 = startPoint.getX(  );
+        double y1 = startPoint.getY(  );
+        double x2 = endPoint.getX(  );
+        double y2 = endPoint.getY(  );
+        String integerString = String.valueOf( vertexCost );
+        EdgeLine edgeLine = new EdgeLine( x1, y1, x2, y2, integerString );
+        this.edgeLine = edgeLine;
+    }
 
-		Integer myCost = new Integer(edgeLine.getText());
-		Integer otherCost = new Integer(graficalEdge.getEdgeLine().getText());
-		boolean check2 = myCost.equals(otherCost);
+    public Point getStartPoint(  )
+    {
+        Line2D line = edgeLine.getLine(  );
 
-		answer = check0 && check1 && check2;
+        return (Point) ( line.getP1(  ) );
+    }
 
-		return answer;
-	}
+    public Point getEndPoint(  )
+    {
+        Line2D line = edgeLine.getLine(  );
 
-	/**
-	 * 
-	 * @param startPoint
-	 * @param endPoint
-	 * @param startVertex
-	 * @param endVertex
-	 * @param vertexCost
-	 */
-	public GraficalEdge(Point startPoint, Point endPoint, int startVertex,
-			int endVertex, int vertexCost) {
+        return (Point) ( line.getP2(  ) );
+    }
 
-		double x1 = startPoint.getX();
-		double y1 = startPoint.getY();
-		double x2 = endPoint.getX();
-		double y2 = endPoint.getY();
-		String integerString = String.valueOf(vertexCost);
-		EdgeLine edgeLine = new EdgeLine(x1, y1, x2, y2, integerString);
-		this.edgeLine = edgeLine;
-	}
+    public GraficalEdge( EdgeLine edgeLine, int startVertex, int endVertex )
+    {
+        this.edgeLine = edgeLine;
+        this.startVertex = startVertex;
+        this.endVertex = endVertex;
+    }
 
-	public Point getStartPoint() {
+    public EdgeLine getEdgeLine(  )
+    {
+        return edgeLine;
+    }
 
-		Line2D line = edgeLine.getLine();
+    public int getEdgeCost(  )
+    {
+        int a = Integer.parseInt( edgeLine.getText(  ) );
 
-		return (Point) (line.getP1());
-	}
+        return a;
+    }
 
-	public Point getEndPoint() {
+    public void setEdgeCost( Integer a )
+    {
+        edgeLine.setText( a.toString(  ) );
+    }
 
-		Line2D line = edgeLine.getLine();
+    public void deleteEdge( Graphics2D g, Color c )
+    { // Enviamos el color de fondo
+      // para repintar
+        edgeLine.paint( g, c );
+        edgeLine = null;
+    }
 
-		return (Point) (line.getP2());
-	}
+    public void setEdgeLine( EdgeLine edgeLine )
+    {
+        this.edgeLine = edgeLine;
+    }
 
-	public GraficalEdge(EdgeLine edgeLine, int startVertex, int endVertex) {
-		this.edgeLine = edgeLine;
-		this.startVertex = startVertex;
-		this.endVertex = endVertex;
-	}
+    public int getStartVertex(  )
+    {
+        return startVertex;
+    }
 
-	public EdgeLine getEdgeLine() {
-		return edgeLine;
-	}
+    public void setStartVertex( int startVertex )
+    {
+        this.startVertex = startVertex;
+    }
 
-	public int getEdgeCost() {
+    public int getEndVertex(  )
+    {
+        return endVertex;
+    }
 
-		int a = Integer.parseInt(edgeLine.getText());
-
-		return a;
-	}
-
-	public void setEdgeCost(Integer a) {
-
-		edgeLine.setText(a.toString());
-
-	}
-
-	public void deleteEdge(Graphics2D g, Color c) {// Enviamos el color de fondo
-													// para repintar
-		edgeLine.paint(g, c);
-		edgeLine = null;
-
-	}
-
-	public void setEdgeLine(EdgeLine edgeLine) {
-		this.edgeLine = edgeLine;
-	}
-
-	public int getStartVertex() {
-		return startVertex;
-	}
-
-	public void setStartVertex(int startVertex) {
-		this.startVertex = startVertex;
-	}
-
-	public int getEndVertex() {
-		return endVertex;
-	}
-
-	public void setEndVertex(int endVertex) {
-		this.endVertex = endVertex;
-	}
-
+    public void setEndVertex( int endVertex )
+    {
+        this.endVertex = endVertex;
+    }
 }

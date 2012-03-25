@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,21 +17,19 @@
  */
 package ar.edu.austral.model.utils.enums;
 
-public enum GraphType {
+public enum GraphType
+{DIRECTED( "Directed" ),
+    UNDIRECTED( "Undirected" );
 
-	DIRECTED("Directed"), UNDIRECTED("Undirected");
+    private String graphString;
 
-	private String graphString;
+    private GraphType( String graphString )
+    {
+        this.graphString = graphString;
+    }
 
-	private GraphType(String graphString) {
-
-		this.graphString = graphString;
-
-	}
-
-	public String toString() {
-
-		return graphString;
-	}
-
+    public String toString(  )
+    {
+        return graphString;
+    }
 }

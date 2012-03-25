@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,108 +17,114 @@
  */
 package ar.edu.austral.view.elements;
 
-import javax.swing.*;
-import javax.swing.event.ListSelectionListener;
-
 import ar.edu.austral.view.gui.GraphObserver;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.BorderLayout;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MyListDialog extends JDialog {
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JMenuBar;
+import javax.swing.JRootPane;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
-	public static final String ACCEPT_STRING = "Show solution";
+public class MyListDialog
+    extends JDialog
+{
+    public static final String ACCEPT_STRING = "Show solution";
+    protected List list;
+    protected JButton acceptButton;
+    protected JList jList;
+    protected DefaultListModel defaultListModel;
+    protected GraphObserver go;
 
-	protected List list;
-	protected JButton acceptButton;
-	protected JList jList;
-	protected DefaultListModel defaultListModel;
-	protected GraphObserver go;
+    public static void main( String[] arfds )
+    {
+        JFrame jFrame = new JFrame( "jajajaj" );
+        List<String> list = new ArrayList<String>( 10 );
 
-	public static void main(String[] arfds) {
+        for ( int i = 0; i < 11; i++ )
+        {
+            list.add( i, "dsfdsf  gffdgf" + i );
+        }
 
-		JFrame jFrame = new JFrame("jajajaj");
-		List<String> list = new ArrayList<String>(10);
+        MyListDialog myListDialog = new MyListDialog( jFrame, list );
+    }
 
-		for (int i = 0; i < 11; i++) {
+    public MyListDialog( Frame frame, List list )
+    {
+        super( frame, "List dialog" );
 
-			list.add(i, "dsfdsf  gffdgf" + i);
+        acceptButton.addActionListener( new java.awt.event.ActionListener(  )
+            {
+                public void actionPerformed( java.awt.event.ActionEvent evt )
+                {
+                    acceptButtonActionPerformed( evt );
+                }
+            } );
+        this.list = list;
+        addList(  );
+        setDefaultCloseOperation( DISPOSE_ON_CLOSE );
+        setVisible( true );
+        setResizable( true );
+        setJMenuBar( new JMenuBar(  ) );
+        pack(  );
+    }
 
-		}
-		MyListDialog myListDialog = new MyListDialog(jFrame, list);
-	}
+    public void addObserver( GraphObserver go )
+    {
+        this.go = go;
+    }
 
-	public MyListDialog(Frame frame, List list) {
+    protected void acceptButtonActionPerformed( ActionEvent actionEvent )
+    {
+        super.dispose(  );
+    }
 
-		super(frame, "List dialog");
+    protected void createGui(  )
+    {
+        acceptButton = new JButton( MyListDialog.ACCEPT_STRING );
+    }
 
-		acceptButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				acceptButtonActionPerformed(evt);
-			}
-		});
-		this.list = list;
-		addList();
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setVisible(true);
-		setResizable(true);
-		setJMenuBar(new JMenuBar());
-		pack();
+    protected void addList(  )
+    {
+        String stringToInsert;
+        Object object;
 
-	}
+        for ( int i = 0; i < list.size(  ); i++ )
+        {
+            object = list.get( i );
+            stringToInsert = object.toString(  );
 
-	public void addObserver(GraphObserver go) {
-		this.go = go;
-	}
+            defaultListModel.add( i, stringToInsert );
+        }
+    }
 
-	protected void acceptButtonActionPerformed(ActionEvent actionEvent) {
+    protected JRootPane createRootPane(  )
+    {
+        createGui(  );
 
-		super.dispose();
+        JRootPane jRootPane = new JRootPane(  );
 
-	}
+        jRootPane.setLayout( new BorderLayout(  ) );
+        defaultListModel = new DefaultListModel(  );
+        jList = new JList( defaultListModel );
+        jList.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
+        jList.setSelectedIndex( 0 );
+        jList.setVisibleRowCount( 20 );
 
-	protected void createGui() {
+        JScrollPane listScrollPane = new JScrollPane( jList );
 
-		acceptButton = new JButton(MyListDialog.ACCEPT_STRING);
+        jRootPane.add( listScrollPane, BorderLayout.CENTER );
+        jRootPane.add( acceptButton, BorderLayout.PAGE_END );
 
-	}
-
-	protected void addList() {
-
-		String stringToInsert;
-		Object object;
-		for (int i = 0; i < list.size(); i++) {
-			object = list.get(i);
-			stringToInsert = object.toString();
-
-			defaultListModel.add(i, stringToInsert);
-
-		}
-
-	}
-
-	protected JRootPane createRootPane() {
-
-		createGui();
-
-		JRootPane jRootPane = new JRootPane();
-
-		jRootPane.setLayout(new BorderLayout());
-		defaultListModel = new DefaultListModel();
-		jList = new JList(defaultListModel);
-		jList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		jList.setSelectedIndex(0);
-		jList.setVisibleRowCount(20);
-
-		JScrollPane listScrollPane = new JScrollPane(jList);
-
-		jRootPane.add(listScrollPane, BorderLayout.CENTER);
-		jRootPane.add(acceptButton, BorderLayout.PAGE_END);
-
-		return jRootPane;
-	}
+        return jRootPane;
+    }
 }

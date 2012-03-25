@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,114 +21,110 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
-public class GraficalVertex {
+public class GraficalVertex
+{
+    public static final Font DEFAULT_FONT = new Font( "Arial", Font.BOLD, 80 );
+    private static final String NODE = ".";
+    private String string;
+    private Color color; // color for font and vertex
+    private Font font;
+    private Point startPoint;
 
-	public static final Font DEFAULT_FONT = new Font("Arial", Font.BOLD, 80);
+    public boolean equals( GraficalVertex graficalVertex )
+    {
+        Integer myVertex = new Integer( string );
+        Integer otherVertex = new Integer( graficalVertex.getString(  ) );
 
-	private static final String NODE = ".";
+        return ( myVertex.equals( otherVertex ) );
+    }
 
-	private String string;
-	private Color color;// color for font and vertex
-	private Font font;
-	private Point startPoint;
+    public Integer getVertex(  )
+    {
+        return Integer.parseInt( string );
+    }
 
-	public boolean equals(GraficalVertex graficalVertex) {
+    public void setVertex( Integer vertex )
+    {
+        String string = new String( vertex.toString(  ) );
+        this.string = string;
+    }
 
-		Integer myVertex = new Integer(string);
-		Integer otherVertex = new Integer(graficalVertex.getString());
+    public GraficalVertex( String string, Color color, Font font, Point startPoint )
+    {
+        this.string = string;
+        this.color = color;
+        this.font = font;
+        this.startPoint = startPoint;
+    }
 
-		return (myVertex.equals(otherVertex));
-	}
+    public void deleteVertex( Graphics2D graphics, Color color )
+    {
+        Color backColor = graphics.getBackground(  );
+        graphics.setFont( font );
+        graphics.drawString( string, startPoint.x, startPoint.y + 20 ); // era 1
 
-	public Integer getVertex() {
+        graphics.setFont( DEFAULT_FONT );
+        graphics.drawString( GraficalVertex.NODE, startPoint.x, startPoint.y - 6 );
+    }
 
-		return Integer.parseInt(string);
-	}
+    public void draw( Graphics2D graphics, Color otherColor )
+    {
+        graphics.setColor( otherColor );
+        graphics.setFont( font );
+        graphics.drawString( string, startPoint.x, startPoint.y + 20 ); // era 1
 
-	public void setVertex(Integer vertex) {
+        graphics.setFont( DEFAULT_FONT );
+        graphics.drawString( GraficalVertex.NODE, startPoint.x, startPoint.y - 6 );
+    }
 
-		String string = new String(vertex.toString());
-		this.string = string;
-	}
+    public void draw( Graphics2D graphics )
+    {
+        graphics.setColor( color );
+        graphics.setFont( font );
+        graphics.drawString( string, startPoint.x, startPoint.y + 20 );
 
-	public GraficalVertex(String string, Color color, Font font,
-			Point startPoint) {
+        graphics.setFont( DEFAULT_FONT );
+        graphics.drawString( GraficalVertex.NODE, startPoint.x, startPoint.y - 6 );
+    }
 
-		this.string = string;
-		this.color = color;
-		this.font = font;
-		this.startPoint = startPoint;
+    public String getString(  )
+    {
+        return string;
+    }
 
-	}
+    public void setString( String string )
+    {
+        this.string = string;
+    }
 
-	public void deleteVertex(Graphics2D graphics, Color color) {
+    public Color getColor(  )
+    {
+        return color;
+    }
 
-		Color backColor = graphics.getBackground();
-		graphics.setFont(font);
-		graphics.drawString(string, startPoint.x, startPoint.y + 20);// era 1
+    public void setColor( Color color )
+    {
+        this.color = color;
+    }
 
-		graphics.setFont(DEFAULT_FONT);
-		graphics.drawString(GraficalVertex.NODE, startPoint.x, startPoint.y - 6);
+    public Font getFont(  )
+    {
+        return font;
+    }
 
-	}
+    public void setFont( Font font )
+    {
+        this.font = font;
+    }
 
-	public void draw(Graphics2D graphics, Color otherColor) {
-		graphics.setColor(otherColor);
-		graphics.setFont(font);
-		graphics.drawString(string, startPoint.x, startPoint.y + 20);// era 1
+    public Point getStartPoint(  )
+    {
+        return startPoint;
+    }
 
-		graphics.setFont(DEFAULT_FONT);
-		graphics.drawString(GraficalVertex.NODE, startPoint.x, startPoint.y - 6);
-
-	}
-
-	public void draw(Graphics2D graphics) {
-		graphics.setColor(color);
-		graphics.setFont(font);
-		graphics.drawString(string, startPoint.x, startPoint.y + 20);
-
-		graphics.setFont(DEFAULT_FONT);
-		graphics.drawString(GraficalVertex.NODE, startPoint.x, startPoint.y - 6);
-	}
-
-	public String getString() {
-		return string;
-	}
-
-	public void setString(String string) {
-		this.string = string;
-	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
-	public Font getFont() {
-		return font;
-	}
-
-	public void setFont(Font font) {
-		this.font = font;
-	}
-
-	public Point getStartPoint() {
-		return startPoint;
-	}
-
-	public void setStartPoint(Point startPoint) {
-		this.startPoint = startPoint;
-	}
-
+    public void setStartPoint( Point startPoint )
+    {
+        this.startPoint = startPoint;
+    }
 }

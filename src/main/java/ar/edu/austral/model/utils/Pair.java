@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,19 @@
  */
 package ar.edu.austral.model.utils;
 
-public interface Pair<E, T> {
+public interface Pair<E, T>
+{
+    public void setFirst( E e )
+                  throws Exception;
 
-	public void setFirst(E e) throws Exception;
+    public void setSecond( T t )
+                   throws Exception;
 
-	public void setSecond(T t) throws Exception;
+    public E getFirst(  );
 
-	public E getFirst();
+    public T getSecond(  );
 
-	public T getSecond();
+    public boolean equalsTo( Pair<E, T> pair );
 
-	public boolean equalsTo(Pair<E, T> pair);
-
-	public boolean equals(Object object);
+    public boolean equals( Object object );
 }

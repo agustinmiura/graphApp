@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,139 +17,143 @@
  */
 package ar.edu.austral.model.algorithms;
 
+import ar.edu.austral.model.interfaces.Directed;
+import ar.edu.austral.model.interfaces.IWeight;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Stack;
 
-import ar.edu.austral.model.implementations.AdjacentMatrixWeightDirected;
-import ar.edu.austral.model.interfaces.Directed;
-import ar.edu.austral.model.interfaces.IWeight;
+public class Floyd
+{
+    public static <T> List<int[][]> floyd( Directed<T> directed )
+                                   throws Exception
+    {
+        return ( subFloyd( directed ) );
+    }
 
-public class Floyd {
+    public static List<Integer> decodeWay( int startVertex, int endVertex, int[][] floydSolution )
+    {
+        List<Integer> way = new ArrayList<Integer>(  );
+        Queue<Integer> queue = new LinkedList<Integer>(  );
+        queue.offer( startVertex );
 
-	public static <T> List<int[][]> floyd(Directed<T> directed)
-			throws Exception {
+        int vertexToGo = endVertex;
+        int currentVertex;
 
-		return (subFloyd(directed));
-	}
+        while ( vertexToGo != -1 )
+        {
+            currentVertex = floydSolution[startVertex][vertexToGo];
 
-	public static List<Integer> decodeWay(int startVertex, int endVertex,
-			int[][] floydSolution) {
+            if ( currentVertex == -1 )
+            {
+                vertexToGo = -1;
+                queue.offer( endVertex );
+            } else
+            {
+                queue.offer( currentVertex );
+                vertexToGo = currentVertex;
+            }
+        }
 
-		List<Integer> way = new ArrayList<Integer>();
-		Queue<Integer> queue = new LinkedList<Integer>();
-		queue.offer(startVertex);
+        while ( ! queue.isEmpty(  ) )
+        {
+            way.add( queue.poll(  ) );
+        }
 
-		int vertexToGo = endVertex;
-		int currentVertex;
+        return way;
+    }
 
-		while (vertexToGo != -1) {
+    /**
+     *
+     * @param <T>
+     * @param directed
+     * @return
+     * @throws Exception
+     */
+    private static <T> List<int[][]> subFloyd( Directed<T> directed )
+                                       throws Exception
+    {
+        IWeight iWeight;
+        iWeight = (IWeight) directed;
 
-			currentVertex = floydSolution[startVertex][vertexToGo];
+        int[][] answer = null;
+        int[][] calculateMatrix = null;
+        int vertexQty = directed.getVertexQty(  );
 
-			if (currentVertex == -1) {
-				vertexToGo = -1;
-				queue.offer(endVertex);
-			} else {
-				queue.offer(currentVertex);
-				vertexToGo = currentVertex;
-			}
+        calculateMatrix = new int[vertexQty][vertexQty];
+        answer = new int[vertexQty][vertexQty];
 
-		}
-		while (!queue.isEmpty()) {
+        int minimumCost;
+        boolean existEdge;
+        List<Integer> listCost;
 
-			way.add(queue.poll());
-		}
-		return way;
-	}
+        for ( int i = 0; i < vertexQty; i++ )
+        {
+            for ( int j = 0; j < vertexQty; j++ )
+            {
+                listCost = iWeight.getWeight( i, j );
 
-	/**
-	 * 
-	 * @param <T>
-	 * @param directed
-	 * @return
-	 * @throws Exception
-	 */
-	private static <T> List<int[][]> subFloyd(Directed<T> directed)
-			throws Exception {
-		IWeight iWeight;
-		iWeight = (IWeight) directed;
+                if ( ! listCost.isEmpty(  ) )
+                {
+                    minimumCost = Collections.min( listCost );
+                } else
+                {
+                    minimumCost = IWeight.MAX_VALUE;
+                }
 
-		int[][] answer = null;
-		int[][] calculateMatrix = null;
-		int vertexQty = directed.getVertexQty();
+                calculateMatrix[i][j] = minimumCost;
+            }
+        }
 
-		calculateMatrix = new int[vertexQty][vertexQty];
-		answer = new int[vertexQty][vertexQty];
-		int minimumCost;
-		boolean existEdge;
-		List<Integer> listCost;
-		for (int i = 0; i < vertexQty; i++) {
-			for (int j = 0; j < vertexQty; j++) {
-				listCost = iWeight.getWeight(i, j);
-				if (!listCost.isEmpty()) {
+        for ( int i = 0; i < vertexQty; i++ )
+        {
+            calculateMatrix[i][i] = 0;
+        }
 
-					minimumCost = Collections.min(listCost);
-				} else {
+        for ( int i = 0; i < vertexQty; i++ )
+        {
+            for ( int j = 0; j < vertexQty; j++ )
+            {
+                answer[i][j] = -1;
+            }
+        }
 
-					minimumCost = IWeight.MAX_VALUE;
-				}
+        int state = -1;
 
-				calculateMatrix[i][j] = minimumCost;
+        int step;
+        int startVertex;
+        int endVertex;
 
-			}
+        int directCost;
+        int indirectCost;
 
-		}
+        for ( step = 0; step < vertexQty; step++ )
+        {
+            for ( startVertex = 0; startVertex < vertexQty; startVertex++ )
+            {
+                for ( endVertex = 0; endVertex < vertexQty; endVertex++ )
+                {
+                    directCost = calculateMatrix[startVertex][endVertex];
+                    indirectCost = calculateMatrix[startVertex][step] + calculateMatrix[step][endVertex];
 
-		for (int i = 0; i < vertexQty; i++) {
-			calculateMatrix[i][i] = 0;
-		}
+                    if ( indirectCost < directCost )
+                    {
+                        answer[startVertex][endVertex] = step;
+                        calculateMatrix[startVertex][endVertex] = indirectCost;
+                    }
+                }
+            }
+        }
 
-		for (int i = 0; i < vertexQty; i++) {
-			for (int j = 0; j < vertexQty; j++) {
+        state = -1;
 
-				answer[i][j] = -1;
+        List<int[][]> answerList = new ArrayList(  );
+        answerList.add( calculateMatrix );
+        answerList.add( answer );
 
-			}
-
-		}
-
-		int state = -1;
-
-		int step;
-		int startVertex;
-		int endVertex;
-
-		int directCost;
-		int indirectCost;
-
-		for (step = 0; step < vertexQty; step++) {
-			for (startVertex = 0; startVertex < vertexQty; startVertex++) {
-				for (endVertex = 0; endVertex < vertexQty; endVertex++) {
-
-					directCost = calculateMatrix[startVertex][endVertex];
-					indirectCost = calculateMatrix[startVertex][step]
-							+ calculateMatrix[step][endVertex];
-
-					if (indirectCost < directCost) {
-						answer[startVertex][endVertex] = step;
-						calculateMatrix[startVertex][endVertex] = indirectCost;
-					}
-				}
-
-			}
-
-		}
-
-		state = -1;
-
-		List<int[][]> answerList = new ArrayList();
-		answerList.add(calculateMatrix);
-		answerList.add(answer);
-		return answerList;
-	}
-
+        return answerList;
+    }
 }

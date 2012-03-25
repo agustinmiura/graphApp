@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,9 @@ package ar.edu.austral.model.interfaces;
 
 import java.util.List;
 
-public interface Undirected<T> extends IGraph<T> {
-
-	public List<Integer> getAdjacentList(int vertex) throws Exception;
-
+public interface Undirected<T>
+    extends IGraph<T>
+{
+    public List<Integer> getAdjacentList( int vertex )
+                                  throws Exception;
 }

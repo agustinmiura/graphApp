@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,22 +17,25 @@
  */
 package ar.edu.austral.model.utils;
 
-public class CompleteVertexCost extends VertexCost {
+public class CompleteVertexCost
+    extends VertexCost
+{
+    private Integer origen;
 
-	private Integer origen;
+    public CompleteVertexCost( Integer origen, Integer vertex, Integer cost )
+                       throws Exception
+    {
+        super( vertex, cost );
+        this.origen = origen;
+    }
 
-	public CompleteVertexCost(Integer origen, Integer vertex, Integer cost)
-			throws Exception {
-		super(vertex, cost);
-		this.origen = origen;
-	}
+    public Integer getOrigen(  )
+    {
+        return origen;
+    }
 
-	public Integer getOrigen() {
-		return origen;
-	}
-
-	public void setOrigen(Integer origen) {
-		this.origen = origen;
-	}
-
+    public void setOrigen( Integer origen )
+    {
+        this.origen = origen;
+    }
 }

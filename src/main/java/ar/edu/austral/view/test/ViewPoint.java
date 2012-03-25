@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,48 +22,48 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class ViewPoint extends JPanel {
+public class ViewPoint
+    extends JPanel
+{
+    private int x;
+    private int y;
 
-	private int x, y;
+    public ViewPoint( int x, int y )
+    {
+        this.x = x;
+        this.y = y;
+    }
 
-	public ViewPoint(int x, int y) {
-		this.x = x;
-		this.y = y;
+    public void paint( Graphics g )
+    {
+        Graphics2D g2 = (Graphics2D) g;
 
-	}
-	public void paint(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke( new BasicStroke( 2 ) );
+        g2.setPaint( Color.blue );
 
-		g2.setStroke(new BasicStroke(2));
-		g2.setPaint(Color.blue);
-		Shape circle = new Ellipse2D.Float(x, // superior izquierda x
-				y, // superior izquierda y
-				15, // ancho del cuadrado que lo circunscribe
-				15); // altura de dicho cuadrado
+        Shape circle =
+            new Ellipse2D.Float( x, // superior izquierda x
+                                 y, // superior izquierda y
+                                 15, // ancho del cuadrado que lo circunscribe
+                                 15 ); // altura de dicho cuadrado
 
-		g2.draw(circle);
-	}
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
+        g2.draw( circle );
+    }
 
-		ViewPoint panel = new ViewPoint(1, 1);
+    public static void main( String[] args )
+    {
+        JFrame frame = new JFrame(  );
 
-		panel.setSize(new Dimension(300, 300));
-		frame.add(panel);
-		frame.setVisible(true);
+        ViewPoint panel = new ViewPoint( 1, 1 );
 
-	}
-
+        panel.setSize( new Dimension( 300, 300 ) );
+        frame.add( panel );
+        frame.setVisible( true );
+    }
 }

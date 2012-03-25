@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,6 @@
  */
 package ar.edu.austral.model.algorithms;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Set;
-import java.util.TreeSet;
-
 import ar.edu.austral.model.implementations.AdjacentListWeightGraph;
 import ar.edu.austral.model.interfaces.IGraph;
 import ar.edu.austral.model.interfaces.IWeight;
@@ -34,152 +25,191 @@ import ar.edu.austral.model.utils.Pair;
 import ar.edu.austral.model.utils.enums.ComparatorsUsed;
 import ar.edu.austral.model.utils.enums.OriginalPositionCost;
 
-public class MinimumSpanningTreePrim {
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Set;
+import java.util.TreeSet;
 
-	private static final MinimumSpanningTreePrim MINIMUM_TREE = new MinimumSpanningTreePrim();
+public class MinimumSpanningTreePrim
+{
+    private static final MinimumSpanningTreePrim MINIMUM_TREE = new MinimumSpanningTreePrim(  );
 
-	public static IWeight getMinimunSpanningTree(IWeight graph, int startVertex)
-			throws Exception {
+    public static IWeight getMinimunSpanningTree( IWeight graph, int startVertex )
+                                          throws Exception
+    {
+        int[] fatherArray = ( MINIMUM_TREE.getAnswer( graph, startVertex ) );
+        int vertexQty = fatherArray.length;
+        IWeight minimumSpanningTree = new AdjacentListWeightGraph( vertexQty );
 
-		int[] fatherArray = (MINIMUM_TREE.getAnswer(graph, startVertex));
-		int vertexQty = fatherArray.length;
-		IWeight minimumSpanningTree = new AdjacentListWeightGraph(vertexQty);
+        int position;
+        boolean differentThan;
+        List<Integer> listCost;
+        int cost;
 
-		int position;
-		boolean differentThan;
-		List<Integer> listCost;
-		int cost;
-		for (int i = 0; i < vertexQty; i++) {
-			position = fatherArray[i];
-			differentThan = (position != -1);
-			if (differentThan) {
-				listCost = graph.getWeight(i, position);
-				cost = Collections.min(listCost);
-				minimumSpanningTree.addWeight(i, position, cost);
-			}
+        for ( int i = 0; i < vertexQty; i++ )
+        {
+            position = fatherArray[i];
+            differentThan = ( position != -1 );
 
-		}
-		return minimumSpanningTree;
-	}
+            if ( differentThan )
+            {
+                listCost = graph.getWeight( i, position );
+                cost = Collections.min( listCost );
+                minimumSpanningTree.addWeight( i, position, cost );
+            }
+        }
 
-	private boolean isInvalidParameter(IWeight graph, int startVertex)
-			throws Exception {
-		boolean answer = false;
-		IGraph otherGraph = null;
-		if (graph == null) {
-			throw new Exception("Using null parameter");
-		}
-		try {
-			otherGraph = (IGraph) graph;
-		} catch (ClassCastException e) {
-			throw new Exception("You used an object that "
-					+ "implements Iweight but not IGraph what are you doing");
-		}
-		int vertexQty = otherGraph.getVertexQty();
+        return minimumSpanningTree;
+    }
 
-		if (startVertex < 0 || startVertex >= (vertexQty)) {
-			throw new Exception("Using a bad index "
-					+ "for the startVertex , vertex<0 or out of bound ");
-		}
+    private boolean isInvalidParameter( IWeight graph, int startVertex )
+                                throws Exception
+    {
+        boolean answer = false;
+        IGraph otherGraph = null;
 
-		return answer;
-	}
+        if ( graph == null )
+        {
+            throw new Exception( "Using null parameter" );
+        }
 
-	private int[] getAnswer(IWeight graph, int startVertex) throws Exception {
-		int[] answer = null;
-		if (isInvalidParameter(graph, startVertex)) {
-			return answer;
-		}
+        try
+        {
+            otherGraph = (IGraph) graph;
+        } catch ( ClassCastException e )
+        {
+            throw new Exception( "You used an object that " + "implements Iweight but not IGraph what are you doing" );
+        }
 
-		answer = subGetFatherArray(graph, startVertex);
-		return answer;
-	}
+        int vertexQty = otherGraph.getVertexQty(  );
 
-	private int[] subGetFatherArray(IWeight graph, int startVertex)
-			throws Exception {
-		Undirected undirected = (Undirected) graph;
-		int vertexQty = undirected.getVertexQty();
-		int[] answer = new int[vertexQty];
+        if ( ( startVertex < 0 ) || ( startVertex >= ( vertexQty ) ) )
+        {
+            throw new Exception( "Using a bad index " + "for the startVertex , vertex<0 or out of bound " );
+        }
 
-		Set<Integer> setVertex = new TreeSet<Integer>();
-		int[] dArray = new int[vertexQty];
-		int[] fatherArray = answer;
-		for (int i = 0; i < vertexQty; i++) {
+        return answer;
+    }
 
-			setVertex.add(i);
-		}
-		for (int i = 0; i < vertexQty; i++) {
+    private int[] getAnswer( IWeight graph, int startVertex )
+                     throws Exception
+    {
+        int[] answer = null;
 
-			dArray[i] = IWeight.MAX_VALUE;
-		}
-		for (int i = 0; i < vertexQty; i++) {
+        if ( isInvalidParameter( graph, startVertex ) )
+        {
+            return answer;
+        }
 
-			fatherArray[i] = -1;
+        answer = subGetFatherArray( graph, startVertex );
 
-		}
-		dArray[startVertex] = 0;
-		int vertexU;
-		List<Integer> listAdjacent;
-		Iterator<Integer> iteratorVertex;
-		Integer otherVertex;
-		List<Integer> costUV;
-		int minimumCostUV;
-		boolean existV;
-		boolean uvLessThanD = false;
-		while (!setVertex.isEmpty()) {
-			vertexU = getMinimun(dArray, setVertex);
+        return answer;
+    }
 
-			setVertex.remove(vertexU);
-			listAdjacent = (undirected).getAdjacentList(vertexU);
-			iteratorVertex = listAdjacent.iterator();
+    private int[] subGetFatherArray( IWeight graph, int startVertex )
+                             throws Exception
+    {
+        Undirected undirected = (Undirected) graph;
+        int vertexQty = undirected.getVertexQty(  );
+        int[] answer = new int[vertexQty];
 
-			while (iteratorVertex.hasNext()) {
-				uvLessThanD = false;
-				otherVertex = iteratorVertex.next();
-				existV = setVertex.contains(otherVertex);
-				if (existV) {
-					costUV = graph.getWeight(vertexU, otherVertex);
-					minimumCostUV = Collections.min(costUV);
-					uvLessThanD = lessThan(minimumCostUV, dArray[otherVertex]);
+        Set<Integer> setVertex = new TreeSet<Integer>(  );
+        int[] dArray = new int[vertexQty];
+        int[] fatherArray = answer;
 
-					if (uvLessThanD) {
-						fatherArray[otherVertex] = vertexU;
-						dArray[otherVertex] = minimumCostUV;
-					}
-				}
-			}
+        for ( int i = 0; i < vertexQty; i++ )
+        {
+            setVertex.add( i );
+        }
 
-		}
-		answer = fatherArray;
-		return answer;
-	}
-	private boolean lessThan(Integer o1, Integer o2) {
+        for ( int i = 0; i < vertexQty; i++ )
+        {
+            dArray[i] = IWeight.MAX_VALUE;
+        }
 
-		int compareState = o1.compareTo(o2);
-		return (compareState < 0);
+        for ( int i = 0; i < vertexQty; i++ )
+        {
+            fatherArray[i] = -1;
+        }
 
-	}
-	private int getMinimun(int[] dArray, Set<Integer> indexWhereSearch) {
-		int answer = -1;
-		int size = dArray.length;
-		Iterator<Integer> iterator = indexWhereSearch.iterator();
-		Queue<Pair<Integer, Integer>> heapPositionCost = new PriorityQueue(
-				size, ComparatorsUsed.getComparatorSecondNumber());
-		Integer cost;
-		OriginalPositionCost pairPositionCost;
-		Integer positionToSearch;
-		while (iterator.hasNext()) {
+        dArray[startVertex] = 0;
 
-			positionToSearch = iterator.next();
-			cost = dArray[positionToSearch];
-			pairPositionCost = new OriginalPositionCost(positionToSearch, cost);
-			heapPositionCost.offer(pairPositionCost);
-		}
-		Pair<Integer, Integer> pairPositionMinimumCost = heapPositionCost
-				.poll();
-		answer = pairPositionMinimumCost.getFirst();
+        int vertexU;
+        List<Integer> listAdjacent;
+        Iterator<Integer> iteratorVertex;
+        Integer otherVertex;
+        List<Integer> costUV;
+        int minimumCostUV;
+        boolean existV;
+        boolean uvLessThanD = false;
 
-		return answer;
-	}
+        while ( ! setVertex.isEmpty(  ) )
+        {
+            vertexU = getMinimun( dArray, setVertex );
 
+            setVertex.remove( vertexU );
+            listAdjacent = ( undirected ).getAdjacentList( vertexU );
+            iteratorVertex = listAdjacent.iterator(  );
+
+            while ( iteratorVertex.hasNext(  ) )
+            {
+                uvLessThanD = false;
+                otherVertex = iteratorVertex.next(  );
+                existV = setVertex.contains( otherVertex );
+
+                if ( existV )
+                {
+                    costUV = graph.getWeight( vertexU, otherVertex );
+                    minimumCostUV = Collections.min( costUV );
+                    uvLessThanD = lessThan( minimumCostUV, dArray[otherVertex] );
+
+                    if ( uvLessThanD )
+                    {
+                        fatherArray[otherVertex] = vertexU;
+                        dArray[otherVertex] = minimumCostUV;
+                    }
+                }
+            }
+        }
+
+        answer = fatherArray;
+
+        return answer;
+    }
+
+    private boolean lessThan( Integer o1, Integer o2 )
+    {
+        int compareState = o1.compareTo( o2 );
+
+        return ( compareState < 0 );
+    }
+
+    private int getMinimun( int[] dArray, Set<Integer> indexWhereSearch )
+    {
+        int answer = -1;
+        int size = dArray.length;
+        Iterator<Integer> iterator = indexWhereSearch.iterator(  );
+        Queue<Pair<Integer, Integer>> heapPositionCost =
+            new PriorityQueue( size,
+                               ComparatorsUsed.getComparatorSecondNumber(  ) );
+        Integer cost;
+        OriginalPositionCost pairPositionCost;
+        Integer positionToSearch;
+
+        while ( iterator.hasNext(  ) )
+        {
+            positionToSearch = iterator.next(  );
+            cost = dArray[positionToSearch];
+            pairPositionCost = new OriginalPositionCost( positionToSearch, cost );
+            heapPositionCost.offer( pairPositionCost );
+        }
+
+        Pair<Integer, Integer> pairPositionMinimumCost = heapPositionCost.poll(  );
+        answer = pairPositionMinimumCost.getFirst(  );
+
+        return answer;
+    }
 }

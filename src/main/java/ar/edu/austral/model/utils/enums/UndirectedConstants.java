@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,20 +20,23 @@ package ar.edu.austral.model.utils.enums;
 import ar.edu.austral.model.utils.Pair;
 import ar.edu.austral.model.utils.VertexCost;
 
-public class UndirectedConstants {
+public class UndirectedConstants
+{
+    public static Pair<Integer, Integer> getPairZero(  )
+    {
+        Pair<Integer, Integer> pair = null;
 
-	public static Pair<Integer, Integer> getPairZero() {
-		Pair<Integer, Integer> pair = null;
-		try {
-			pair = new VertexCost(new Integer(0), new Integer(0));
+        try
+        {
+            pair = new VertexCost( new Integer( 0 ),
+                                   new Integer( 0 ) );
 
-			return pair;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return pair;
+            return pair;
+        } catch ( Exception e )
+        {
+            e.printStackTrace(  );
+        }
 
-	}
-
+        return pair;
+    }
 }

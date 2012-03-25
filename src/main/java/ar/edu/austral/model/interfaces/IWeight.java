@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 	Almada Emiliano
- * 						Miura Agustín
- * 					  	 
+ * Copyright (C) 2009         Almada Emiliano
+ *                                                 Miura Agustín
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,23 +19,22 @@ package ar.edu.austral.model.interfaces;
 
 import java.util.List;
 
-public interface IWeight {
+public interface IWeight
+{
+    int MAX_VALUE = 100;
 
-	int MAX_VALUE = 100;
+    public List<Integer> getWeight( int startVertex, int endVertex )
+                            throws Exception;
 
-	public List<Integer> getWeight(int startVertex, int endVertex)
-			throws Exception;
+    public void setWeight( int startVertex, int endVertex, int weight, int newWeight )
+                   throws Exception;
 
-	public void setWeight(int startVertex, int endVertex, int weight,
-			int newWeight) throws Exception;
+    public void addWeight( int startVertex, int endVertex, int weight )
+                   throws Exception;
 
-	public void addWeight(int startVertex, int endVertex, int weight)
-			throws Exception;
+    public boolean foundWeight( int startVertex, int endVertex, int weight )
+                        throws Exception;
 
-	public boolean foundWeight(int startVertex, int endVertex, int weight)
-			throws Exception;
-
-	public void deleteWeight(int startVertex, int endVertex, int weight)
-			throws Exception;
-
+    public void deleteWeight( int startVertex, int endVertex, int weight )
+                      throws Exception;
 }
