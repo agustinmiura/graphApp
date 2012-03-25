@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2009         Almada Emiliano
- *                                                 Miura Agustín
+ *                            Miura Agustín
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
